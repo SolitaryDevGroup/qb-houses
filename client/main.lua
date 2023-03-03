@@ -667,7 +667,7 @@ function HouseKeysMenu()
             keyholderMenu[#keyholderMenu+1] = {
                 header = holders[k].firstname .. " " .. holders[k].lastname,
                 params = {
-                    event = "qb-houses:client:OpenClientOptions",
+                    event = "qb-houses:client:KeyholderOptions",
                     args = {
                         citizenData = holders[k]
                     }
