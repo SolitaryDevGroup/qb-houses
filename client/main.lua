@@ -70,6 +70,13 @@ local function showEntranceHeaderMenu()
                     args = {}
                 }
             }
+            headerMenu[#headerMenu+1] = {
+                header = Lang:t("menu.keyolders"),
+                params = {
+                    event = "qb-houses:client:removeHouseKey",
+                    args = {}
+                }
+            }
         elseif isOwned and not HasHouseKey then
             headerMenu[#headerMenu+1] = {
                 header = Lang:t("menu.ring_door"),
