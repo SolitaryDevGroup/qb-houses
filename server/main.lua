@@ -555,7 +555,8 @@ QBCore.Functions.CreateCallback('qb-phone:server:GetPlayerHouses', function(sour
                 price = Config.Houses[v.house].price,
                 label = Config.Houses[v.house].adress,
                 tier = Config.Houses[v.house].tier,
-                garage = Config.Houses[v.house].garage
+                garage = Config.Houses[v.house].garage,
+                locked = Config.Houses[v.house].locked
             }
 
             if v.keyholders ~= "null" then
