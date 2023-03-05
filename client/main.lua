@@ -63,13 +63,38 @@ local function showEntranceHeaderMenu()
                     args = {}
                 }
             }
-            headerMenu[#headerMenu+1] = {
-                header = Lang:t("menu.give_house_key"),
-                params = {
-                    event = "qb-houses:client:giveHouseKey",
-                    args = {}
-                }
-            }
+            -- headerMenu[#headerMenu+1] = {
+            --     header = Lang:t("menu.give_house_key"),
+            --     params = {
+            --         event = "qb-houses:client:giveHouseKey",
+            --         args = {}
+            --     }
+            -- }
+            if ClosestHouse ~= nil then
+                if ClosestHouse.locked then
+                    headerMenu[#headerMenu+1] = {
+                        header = Lang:t("menu.lockhouse"),
+                        params = {
+                            event = "qb-houses:server:lockHouse",
+                            args = {
+                                false,
+                                ClosestHouse.name,
+                            }
+                        }
+                    }
+                else
+                    headerMenu[#headerMenu+1] = {
+                        header = Lang:t("menu.unlockhouse"),
+                        params = {
+                            event = "qb-houses:server:lockHouse",
+                            args = {
+                                true,
+                                ClosestHouse.name,
+                            }
+                        }
+                    }
+                end
+            end
             headerMenu[#headerMenu+1] = {
                 header = Lang:t("menu.keyolders"),
                 params = {
