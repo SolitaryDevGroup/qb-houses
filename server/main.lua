@@ -246,6 +246,8 @@ RegisterNetEvent('qb-houses:server:buyHouse', function(house)
 end)
 
 RegisterNetEvent('qb-houses:server:lockHouse', function(bool, house)
+    Citizen.Trace("locked server: " .. tostring(bool) .. " casa: " .. house .."\n")
+    --Config.Houses[ClosestHouse].locked = bool
     TriggerClientEvent('qb-houses:client:lockHouse', -1, bool, house)
 end)
 
