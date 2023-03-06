@@ -71,25 +71,26 @@ local function showEntranceHeaderMenu()
             --     }
             -- }
             if ClosestHouse ~= nil then
-                if ClosestHouse.locked then
+                if Config.Houses[ClosestHouse].locked then
+                    Citizen.Trace(tostring(Config.Houses[ClosestHouse].locked) .. '\n')
                     headerMenu[#headerMenu+1] = {
-                        header = Lang:t("menu.lockhouse"),
+                        header = Lang:t("menu.unlockhouse"),
                         params = {
-                            event = "qb-houses:server:lockHouse",
+                            event = "qb-houses:client:toggleDoorlock",
                             args = {
-                                false,
-                                ClosestHouse.name,
+                                -- false,
+                                -- ClosestHouse.name,
                             }
                         }
                     }
                 else
                     headerMenu[#headerMenu+1] = {
-                        header = Lang:t("menu.unlockhouse"),
+                        header = Lang:t("menu.lockhouse"),
                         params = {
-                            event = "qb-houses:server:lockHouse",
+                            event = "qb-houses:client:toggleDoorlock",
                             args = {
-                                true,
-                                ClosestHouse.name,
+                                -- true,
+                                -- ClosestHouse.name,
                             }
                         }
                     }
@@ -1073,6 +1074,7 @@ end)
 
 RegisterNetEvent('qb-houses:client:lockHouse', function(bool, house)
     Config.Houses[house].locked = bool
+    Citizen.Trace("locked: " .. tostring(bool) .. " casa: " .. house .."\n")
 end)
 
 RegisterNetEvent('qb-houses:client:createHouses', function(price, tier)
