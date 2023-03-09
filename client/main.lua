@@ -1221,61 +1221,62 @@ RegisterNetEvent('qb-houses:client:setupHouseBlips', function() -- Setup owned o
             playerl = QBCore.Functions.GetPlayerData()
             if playerl.job and playerl.job.name == 'realestate' then
                 realjob = true
-            end
-            QBCore.Functions.TriggerCallback('qb-houses:server:getOwnedHouses', function(ownedHouses)
-                if ownedHouses then
-                    for k, _ in pairs(ownedHouses) do
-                        QBCore.Functions.TriggerCallback('qb-houses:server:getHouseOwner', function(result)
-                            if playerl.citizenid == result then
-                                owner = true
-                            end
-                        end, ownedHouses[k])
-                        QBCore.Functions.TriggerCallback('qb-houses:server:ProximityKO', function(key, owned)
-                            lockey = key
-                            lowned = owned
-                        end, ownedHouses[k])
-                        if owner then
-                            local house = Config.Houses[ownedHouses[k]]
-                            local HouseBlip = AddBlipForCoord(house.coords.enter.x, house.coords.enter.y, house.coords.enter.z)
-                            SetBlipSprite (HouseBlip, 40)
-                            SetBlipDisplay(HouseBlip, 4)
-                            SetBlipScale  (HouseBlip, 0.65)
-                            SetBlipAsShortRange(HouseBlip, true)
-                            SetBlipColour(HouseBlip, 25)
-                            AddTextEntry('OwnedHouse', house.adress)
-                            BeginTextCommandSetBlipName('OwnedHouse')
-                            EndTextCommandSetBlipName(HouseBlip)
-                            OwnedHouseBlips[#OwnedHouseBlips+1] = HouseBlip
-                        elseif realjob and playerl.onduty then
-                            local house = Config.Houses[ownedHouses[k]]
-                            local HouseBlip = AddBlipForCoord(house.coords.enter.x, house.coords.enter.y, house.coords.enter.z)
-                            SetBlipSprite (HouseBlip, 40)
-                            SetBlipDisplay(HouseBlip, 4)
-                            SetBlipScale  (HouseBlip, 0.65)
-                            SetBlipAsShortRange(HouseBlip, true)
-                            SetBlipColour(HouseBlip, 55)
-                            AddTextEntry('OwnedHouse', house.adress)
-                            BeginTextCommandSetBlipName('OwnedHouse')
-                            EndTextCommandSetBlipName(HouseBlip)
-                            OwnedHouseBlips[#OwnedHouseBlips+1] = HouseBlip
-                        elseif lockey and not owner then
-                            local house = Config.Houses[ownedHouses[k]]
-                            local HouseBlip = AddBlipForCoord(house.coords.enter.x, house.coords.enter.y, house.coords.enter.z)
-                            SetBlipSprite (HouseBlip, 40)
-                            SetBlipDisplay(HouseBlip, 4)
-                            SetBlipScale  (HouseBlip, 0.65)
-                            SetBlipAsShortRange(HouseBlip, true)
-                            SetBlipColour(HouseBlip, 3)
-                            AddTextEntry('OwnedHouse', house.adress)
-                            BeginTextCommandSetBlipName('OwnedHouse')
-                            EndTextCommandSetBlipName(HouseBlip)
-                            OwnedHouseBlips[#OwnedHouseBlips+1] = HouseBlip
+            end    
+            for k, ownedHouses in pairs(Config.Houses) do
+                if ownedHouses.owned then
+                    QBCore.Functions.TriggerCallback('qb-houses:server:getHouseOwner', function(result)
+                        Citizen.Trace("Cid: "..tostring(result).." ")
+                        if playerl.citizenid == result then
+                            owner = true
                         end
-                        Citizen.Trace("1:"..tostring(ownedHouses).." 2:"..tostring(owner).." 3:"..tostring(realjob).." 4:"..tostring(lockey).." \n")
-                        owner = false
+                    end, ownedHouse.name)
+                    QBCore.Functions.TriggerCallback('qb-houses:server:ProximityKO', function(key, owned)
+                        Citizen.Trace("Key: "..tostring(key).." Owned: "..tostring(owned).." \n")
+                        lockey = key
+                        lowned = owned
+                    end, ownedHouse.name)
+                    Wait(1000)
+                    if owner then
+                        local house = Config.Houses[ownedHouse.name]
+                        local HouseBlip = AddBlipForCoord(house.coords.enter.x, house.coords.enter.y, house.coords.enter.z)
+                        SetBlipSprite (HouseBlip, 40)
+                        SetBlipDisplay(HouseBlip, 4)
+                        SetBlipScale  (HouseBlip, 0.65)
+                        SetBlipAsShortRange(HouseBlip, true)
+                        SetBlipColour(HouseBlip, 25)
+                        AddTextEntry('OwnedHouse', house.adress)
+                        BeginTextCommandSetBlipName('OwnedHouse')
+                        EndTextCommandSetBlipName(HouseBlip)
+                        OwnedHouseBlips[#OwnedHouseBlips+1] = HouseBlip
+                    elseif realjob and playerl.onduty then
+                        local house = Config.Houses[ownedHouse.name]
+                        local HouseBlip = AddBlipForCoord(house.coords.enter.x, house.coords.enter.y, house.coords.enter.z)
+                        SetBlipSprite (HouseBlip, 40)
+                        SetBlipDisplay(HouseBlip, 4)
+                        SetBlipScale  (HouseBlip, 0.65)
+                        SetBlipAsShortRange(HouseBlip, true)
+                        SetBlipColour(HouseBlip, 55)
+                        AddTextEntry('OwnedHouse', house.adress)
+                        BeginTextCommandSetBlipName('OwnedHouse')
+                        EndTextCommandSetBlipName(HouseBlip)
+                        OwnedHouseBlips[#OwnedHouseBlips+1] = HouseBlip
+                    elseif lockey and not owner then
+                        local house = Config.Houses[ownedHouse.name]
+                        local HouseBlip = AddBlipForCoord(house.coords.enter.x, house.coords.enter.y, house.coords.enter.z)
+                        SetBlipSprite (HouseBlip, 40)
+                        SetBlipDisplay(HouseBlip, 4)
+                        SetBlipScale  (HouseBlip, 0.65)
+                        SetBlipAsShortRange(HouseBlip, true)
+                        SetBlipColour(HouseBlip, 3)
+                        AddTextEntry('OwnedHouse', house.adress)
+                        BeginTextCommandSetBlipName('OwnedHouse')
+                        EndTextCommandSetBlipName(HouseBlip)
+                        OwnedHouseBlips[#OwnedHouseBlips+1] = HouseBlip
                     end
+                    Citizen.Trace("1:"..tostring(ownedHouse.name).." 2:"..tostring(owner).." 3:"..tostring(realjob).." 4:"..tostring(lockey).." \n")
+                    owner = false
                 end
-            end)
+            end
         end
     end)
 end)
