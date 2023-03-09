@@ -1271,6 +1271,7 @@ RegisterNetEvent('qb-houses:client:setupHouseBlips', function() -- Setup owned o
                             EndTextCommandSetBlipName(HouseBlip)
                             OwnedHouseBlips[#OwnedHouseBlips+1] = HouseBlip
                         end
+                        Citizen.Trace("1:"..tostring(ownedHouses).." 2:"..tostring(owner).." 3:"..tostring(realjob).." 4:"..tostring(lockey).." \n")
                         owner = false
                     end
                 end
