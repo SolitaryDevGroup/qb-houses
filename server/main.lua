@@ -11,14 +11,12 @@ CreateThread(function()
     local result = MySQL.query.await('SELECT * FROM houselocations', {})
     if result[1] then
         for _, v in pairs(result) do
-            local owned = false
-            if tonumber(v.owned) == 1 then
-                owned = true
-            end
+            Citizen.Trace('compratato: ' .. tostring(v.owned) .. '\n')
             local garage = json.decode(v.garage) or {}
             Config.Houses[v.name] = {
+                name = v.name,
                 coords = json.decode(v.coords),
-                owned = owned,
+                owned = v.owned,--tostring(v.owned),
                 price = v.price,
                 locked = true,
                 adress = v.label,
@@ -396,7 +394,7 @@ QBCore.Functions.CreateCallback('qb-houses:server:ProximityKO', function(source,
         local CharId = Player.PlayerData.citizenid
         if hasKey(identifier, CharId, house) then
             retvalK = true
-        elseif Player.PlayerData.job.name == "realestate" then
+        elseif Player.PlayerData.job.name == "realestate" and not Config.Houses[house].owned then
             retvalK = true
         else
             retvalK = false
