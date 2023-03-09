@@ -1216,28 +1216,30 @@ RegisterNetEvent('qb-houses:client:setupHouseBlips', function() -- Setup owned o
         local realjob = false
         local lockey = false
         local lowned = false
-        Wait(2000)
+        Wait(5000)
         if LocalPlayer.state['isLoggedIn'] then
             playerl = QBCore.Functions.GetPlayerData()
             if playerl.job and playerl.job.name == 'realestate' then
                 realjob = true
             end    
             for k, ownedHouses in pairs(Config.Houses) do
+                --Citizen.Trace("CaseStrafatte: "..tostring(ownedHouses.owned).." \n")
                 if ownedHouses.owned then
+                    --Citizen.Trace(OwnedHouses.owned)
                     QBCore.Functions.TriggerCallback('qb-houses:server:getHouseOwner', function(result)
-                        Citizen.Trace("Cid: "..tostring(result).." ")
+                        --Citizen.Trace("Cid: "..tostring(result).." ")
                         if playerl.citizenid == result then
                             owner = true
                         end
-                    end, ownedHouse.name)
+                    end, ownedHouses.name)
                     QBCore.Functions.TriggerCallback('qb-houses:server:ProximityKO', function(key, owned)
-                        Citizen.Trace("Key: "..tostring(key).." Owned: "..tostring(owned).." \n")
+                        --Citizen.Trace("Key: "..tostring(key).." Owned: "..tostring(owned).." \n")
                         lockey = key
                         lowned = owned
-                    end, ownedHouse.name)
-                    Wait(1000)
+                    end, ownedHouses.name)
+                    Wait(2000)
                     if owner then
-                        local house = Config.Houses[ownedHouse.name]
+                        local house = Config.Houses[ownedHouses.name]
                         local HouseBlip = AddBlipForCoord(house.coords.enter.x, house.coords.enter.y, house.coords.enter.z)
                         SetBlipSprite (HouseBlip, 40)
                         SetBlipDisplay(HouseBlip, 4)
@@ -1248,20 +1250,20 @@ RegisterNetEvent('qb-houses:client:setupHouseBlips', function() -- Setup owned o
                         BeginTextCommandSetBlipName('OwnedHouse')
                         EndTextCommandSetBlipName(HouseBlip)
                         OwnedHouseBlips[#OwnedHouseBlips+1] = HouseBlip
-                    elseif realjob and playerl.onduty then
-                        local house = Config.Houses[ownedHouse.name]
+                    elseif realjob then
+                        local house = Config.Houses[ownedHouses.name]
                         local HouseBlip = AddBlipForCoord(house.coords.enter.x, house.coords.enter.y, house.coords.enter.z)
                         SetBlipSprite (HouseBlip, 40)
                         SetBlipDisplay(HouseBlip, 4)
                         SetBlipScale  (HouseBlip, 0.65)
                         SetBlipAsShortRange(HouseBlip, true)
-                        SetBlipColour(HouseBlip, 55)
+                        SetBlipColour(HouseBlip, 1)
                         AddTextEntry('OwnedHouse', house.adress)
                         BeginTextCommandSetBlipName('OwnedHouse')
                         EndTextCommandSetBlipName(HouseBlip)
                         OwnedHouseBlips[#OwnedHouseBlips+1] = HouseBlip
                     elseif lockey and not owner then
-                        local house = Config.Houses[ownedHouse.name]
+                        local house = Config.Houses[ownedHouses.name]
                         local HouseBlip = AddBlipForCoord(house.coords.enter.x, house.coords.enter.y, house.coords.enter.z)
                         SetBlipSprite (HouseBlip, 40)
                         SetBlipDisplay(HouseBlip, 4)
@@ -1273,7 +1275,7 @@ RegisterNetEvent('qb-houses:client:setupHouseBlips', function() -- Setup owned o
                         EndTextCommandSetBlipName(HouseBlip)
                         OwnedHouseBlips[#OwnedHouseBlips+1] = HouseBlip
                     end
-                    Citizen.Trace("1:"..tostring(ownedHouse.name).." 2:"..tostring(owner).." 3:"..tostring(realjob).." 4:"..tostring(lockey).." \n")
+                    --Citizen.Trace("1:"..tostring(ownedHouses.name).." 2:"..tostring(owner).." 3:"..tostring(realjob).." 4:"..tostring(lockey).." \n")
                     owner = false
                 end
             end
@@ -1282,18 +1284,27 @@ RegisterNetEvent('qb-houses:client:setupHouseBlips', function() -- Setup owned o
 end)
 
 RegisterNetEvent('qb-houses:client:setupHouseBlips2', function() -- Setup unowned on load
+    Citizen.Trace('Appartamenteato ')
+    local playerl = {}
+    playerl = QBCore.Functions.GetPlayerData()
+    Wait(5000)
     for _, v in pairs(Config.Houses) do
+        Citizen.Trace(' ' .. tostring(v.owned) .. ' ')
         if not v.owned then
-            local HouseBlip2 = AddBlipForCoord(v.coords.enter.x, v.coords.enter.y, v.coords.enter.z)
-            SetBlipSprite (HouseBlip2, 40)
-            SetBlipDisplay(HouseBlip2, 4)
-            SetBlipScale  (HouseBlip2, 0.65)
-            SetBlipAsShortRange(HouseBlip2, true)
-            SetBlipColour(HouseBlip2, 3)
-            AddTextEntry('UnownedHouse', Lang:t("info.house_for_sale"))
-            BeginTextCommandSetBlipName('UnownedHouse')
-            EndTextCommandSetBlipName(HouseBlip2)
-            UnownedHouseBlips[#UnownedHouseBlips+1] = HouseBlip2
+            Citizen.Trace(' not v owned ' .. tostring(playerl.job.name))
+            if playerl.job and playerl.job.name == 'realestate' then
+                Citizen.Trace(' è entrato\n')
+                local HouseBlip2 = AddBlipForCoord(v.coords.enter.x, v.coords.enter.y, v.coords.enter.z)
+                SetBlipSprite (HouseBlip2, 350)
+                SetBlipDisplay(HouseBlip2, 4)
+                SetBlipScale  (HouseBlip2, 0.65)
+                SetBlipAsShortRange(HouseBlip2, true)
+                SetBlipColour(HouseBlip2, 0)
+                AddTextEntry('UnownedHouse', Lang:t("info.house_for_sale"))
+                BeginTextCommandSetBlipName('UnownedHouse')
+                EndTextCommandSetBlipName(HouseBlip2)
+                UnownedHouseBlips[#UnownedHouseBlips+1] = HouseBlip2
+            end
         end
     end
 end)
