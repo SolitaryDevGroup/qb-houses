@@ -1269,7 +1269,7 @@ RegisterNetEvent('qb-houses:client:setupHouseBlips', function() -- Setup owned o
                         SetBlipDisplay(HouseBlip, 4)
                         SetBlipScale  (HouseBlip, 0.65)
                         SetBlipAsShortRange(HouseBlip, true)
-                        SetBlipColour(HouseBlip, 3)
+                        SetBlipColour(HouseBlip, 37)
                         AddTextEntry('OwnedHouse', house.adress)
                         BeginTextCommandSetBlipName('OwnedHouse')
                         EndTextCommandSetBlipName(HouseBlip)
