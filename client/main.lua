@@ -1216,6 +1216,7 @@ RegisterNetEvent('qb-houses:client:setupHouseBlips', function() -- Setup owned o
         local realjob = false
         local lockey = false
         local lowned = false
+        for _, v in pairs(OwnedHouseBlips) do RemoveBlip(v) end
         Wait(5000)
         if LocalPlayer.state['isLoggedIn'] then
             playerl = QBCore.Functions.GetPlayerData()
@@ -1287,6 +1288,7 @@ RegisterNetEvent('qb-houses:client:setupHouseBlips2', function() -- Setup unowne
     Citizen.Trace('Appartamenteato ')
     local playerl = {}
     playerl = QBCore.Functions.GetPlayerData()
+    for _, v in pairs(UnownedHouseBlips) do RemoveBlip(v) end
     Wait(5000)
     for _, v in pairs(Config.Houses) do
         Citizen.Trace(' ' .. tostring(v.owned) .. ' ')
